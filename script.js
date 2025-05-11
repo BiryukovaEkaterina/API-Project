@@ -57,35 +57,11 @@ setInterval(updateTime, 1000);
 
 // Получаем погоду (Open-Meteo API без ключа)
 async function fetchWeather() {
-    // Координаты Санкт-Петербурга
-    const latitude = 59.9343;
-    const longitude = 30.3351;
-    
-    // Запрос к Open-Meteo
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
-    
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        // Температура и код погоды
-        const temp = data.current_weather.temperature;
-        const weatherCode = data.current_weather.weathercode;
-        
-        // Расшифровка кодов погоды
-        const weatherDescriptions = {
-            0: "☀️ Ясно",
-            1: "🌤️ Преимущественно ясно",
-            2: "⛅ Переменная облачность",
-            3: "☁️ Пасмурно",
-            45: "🌫️ Туман",
-            61: "🌧️ Небольшой дождь",
-            80: "🌦️ Ливень",
-            95: "⛈️ Гроза"
-        };
-        
-        const weatherText = weatherDescriptions[weatherCode] || "❓ Неизвестно";
-        document.getElementById("weather").textContent = `Погода в СПб: ${weatherText}, ${temp}°C`;
+        // Используем API, которое не требует ключа (например, wttr.in)
+        const response = await fetch("https://wttr.in/Saint%20Petersburg?format=%c+%t");
+        const weatherText = await response.text();
+        document.getElementById("weather").textContent = `Погода в СПб: ${weatherText}`;
     } catch (error) {
         console.error("Ошибка загрузки погоды:", error);
         document.getElementById("weather").textContent = "Погода: ошибка загрузки";
